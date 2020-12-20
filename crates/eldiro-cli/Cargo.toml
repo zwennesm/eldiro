@@ -1,0 +1,8 @@
+[package]
+name = "eldiro-cli"
+version = "0.1.0"
+authors = ["martijnzwennes"]
+edition = "2018"
+
+[dependencies]
+eldiro = {path = "../eldiro"}

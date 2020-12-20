@@ -22,6 +22,23 @@ fn take_while_error(
     }
 }
 
+pub(crate) fn sequence<T>(
+    parser: impl Fn(&str) -> Result<(&str, T), String>,
+    mut s: &str,
+) -> Result<(&str, Vec<T>), String> {
+    let mut items = Vec::new();
+
+    while let Ok((new_s, item)) = parser(s) {
+        s = new_s;
+        items.push(item);
+
+        let (new_s, _) = extract_whitespace(s);
+        s = new_s;
+    }
+
+    Ok((s, items))
+}
+
 pub(crate) fn tag<'a, 'b>(starting_text: &'a str, s: &'b str) -> Result<&'b str, String> {
     if s.starts_with(starting_text) {
         Ok(&s[starting_text.len()..])
